@@ -1,0 +1,11 @@
+<div id="<%= dom_id document %>">
+  <% if full_size %>
+    <%= image_tag document.file, class: 'img-responsive' %>
+  <% else %>
+    <%= image_tag document.file, class: 'img-responsive' %>
+  <% end %>
+
+  <% if document.present? && document.content? %>
+    <%= link_to 'OCR', ocr_path(id: document.id), class: 'btn btn-primary' %>
+  <% end %>
+</div>

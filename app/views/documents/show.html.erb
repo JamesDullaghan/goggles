@@ -1,0 +1,24 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render partial: 'document', locals: { document: @document, full_size: true } %>
+
+<div class="wrapper">
+  <h1>OCR'd Content</h1>
+  <div class="row">
+    <div class="col-md-6">
+       <% if @document.present? && @document.file_id? %>
+        <%= link_to "Upload OCR'd content to Open AI", upload_path(id:
+        @document.id), class: 'btn btn-primary' %>
+      <% end %>
+    </div>
+  </div>
+
+  <%= content_tag :code, @document.content if JSON.parse(@document.content).present? %>
+</div>
+
+<div>
+  <%= link_to "Edit this document", edit_document_path(@document) %> |
+  <%= link_to "Back to documents", documents_path %>
+
+  <%= button_to "Destroy this document", @document, method: :delete %>
+</div>

@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="col-md-6 col-offset-md-3">
+    <%= form_with(model: document) do |form| %>
+      <% if document.errors.any? %>
+        <div class="alert alert-danger" role="alert">
+          <h2><%= pluralize(document.errors.count, "error") %> prohibited this document from being saved:</h2>
+          <% document.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= form.file_field :file %>
+      </div>
+
+      <%= form.submit 'Submit', class: 'btn btn-primary' %>
+    <% end %>
+  </div>
+</div>
