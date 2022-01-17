@@ -41,9 +41,13 @@ class DocumentUploadService < BaseService
       begin
         formatted_file
         response = client.files.upload(parameters: { file: "#{filename}.jsonl", purpose: purpose })
-        document.update(openai_file_id: response)
+        openai_file_id = response.fetch('id', nil)
+        status = response.fetch('status', 'pending')
+
+        if status.eql?('uploaded')
+          document.update(openai_file_id: openai_file_id)
+        end
       ensure
-        binding.pry
          File.delete(formatted_file)
       end
     end
@@ -71,6 +75,8 @@ class DocumentUploadService < BaseService
   end
 
   # The formatted file output written to the file
+  # zero true = empty
+  # zero false = not empty
   #
   # @return [Integer]
   def formatted_file
