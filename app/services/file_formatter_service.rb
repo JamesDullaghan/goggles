@@ -1,3 +1,5 @@
+DELIMITERS = [',', ' ', "'", ":", "&amp;", "&quot;"]
+
 # Format the contents of the file to match the expected json for use with Open AI
 # document = Document.find(15)
 # content = document.content
@@ -13,19 +15,25 @@ class FileFormatterService
   #
   # @return {"text": "puppy A is happy", "metadata": "emotional state of puppy A"}
   def perform
-    DELIMITERS = [',', ' ', "'", ":", "&amp;", "&quot;"]
     words = content.split(Regexp.union(DELIMITERS))
 
+    # value.merge({ metadata: metadata }) if metadata.present?
     words.map do |element|
-      {
-        "text" => element,
-      }
+      '{' + "\"text\":#{element.to_json}" + '}'
     end
-    # metadata: 'what goes here if anything?'
   end
 
   def self.perform(content)
     service = FileFormatterService.new(content: content)
     service.perform
+  end
+
+  private
+
+  # Possible to define metadata somewhere by enriching the word separated or defining where its coming from or something.
+  #
+  # @return [String]
+  def metadata
+    nil
   end
 end

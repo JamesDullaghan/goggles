@@ -43,8 +43,8 @@ class DocumentUploadService < BaseService
         response = client.files.upload(parameters: { file: "#{filename}.jsonl", purpose: purpose })
         document.update(openai_file_id: response)
       ensure
-        # formatted_file.close
-        #  File.delete(formatted_file)
+        binding.pry
+         File.delete(formatted_file)
       end
     end
   end
@@ -56,7 +56,7 @@ class DocumentUploadService < BaseService
 
   private
 
-  # The content supplied from the file upload joined with spaces as a big text blob
+  # The content supplied from the file upload joined with spaces as a big text blob!
   #
   # @return [String]
   def document_content
@@ -74,6 +74,10 @@ class DocumentUploadService < BaseService
   #
   # @return [Integer]
   def formatted_file
-    @_formatted_file ||= File.open("#{filename}.jsonl", 'w+') { |file| file.puts(formatted_contents) }
+    return File.read("#{filename}.jsonl") unless File.zero?(filename)
+
+    @_formatted_file ||= File.open("#{filename}.jsonl", 'w+') do |file|
+      file.puts(formatted_contents)
+    end
   end
 end
