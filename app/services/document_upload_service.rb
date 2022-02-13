@@ -48,7 +48,7 @@ class DocumentUploadService < BaseService
           document.update(openai_file_id: openai_file_id)
         end
       ensure
-         File.delete(formatted_file)
+         # File.delete("#{filename}.jsonl")
       end
     end
   end
@@ -80,7 +80,7 @@ class DocumentUploadService < BaseService
   #
   # @return [Integer]
   def formatted_file
-    return File.read("#{filename}.jsonl") unless File.zero?(filename)
+    return File.read("#{filename}.jsonl") if File.exist?("#{filename}.jsonl")
 
     @_formatted_file ||= File.open("#{filename}.jsonl", 'w+') do |file|
       file.puts(formatted_contents)

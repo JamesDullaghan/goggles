@@ -19,6 +19,8 @@ class FileFormatterService
 
     # value.merge({ metadata: metadata }) if metadata.present?
     words.map do |element|
+      return if element.blank?
+
       '{' + "\"text\":#{element.to_json}" + '}'
     end
   end
